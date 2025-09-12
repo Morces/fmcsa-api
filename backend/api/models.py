@@ -45,9 +45,19 @@ class Truck(models.Model):
 
 
 class Trip(models.Model):
+    
     """
     Stores a trip request and the calculated route information.
     """
+
+    STATUS_CHOICES = [
+        ("PLANNED", "Planned"),
+        ("IN_PROGRESS", "In Progress"),
+        ("COMPLETED", "Completed"),
+        ("CANCELLED", "Cancelled"),
+    ]
+
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     driver = models.ForeignKey(
         Driver,
@@ -56,6 +66,14 @@ class Trip(models.Model):
         blank=True,
         related_name="trips"
     )
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="PLANNED",
+        help_text="Lifecycle status of the trip"
+    )
+
     truck = models.ForeignKey(
         Truck,
         on_delete=models.SET_NULL,

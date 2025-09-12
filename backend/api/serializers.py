@@ -26,6 +26,9 @@ class TripSerializer(serializers.ModelSerializer):
     driver_id = serializers.UUIDField(write_only=True, required=False)
     truck_id = serializers.UUIDField(write_only=True, required=False)
 
+    
+    start_date = serializers.DateField(write_only=True, required=False)
+
     class Meta:
         model = Trip
         fields = "__all__"
