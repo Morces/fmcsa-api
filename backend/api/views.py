@@ -1,4 +1,5 @@
 from rest_framework import viewsets
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from .models import Driver, Truck, Trip, LogSheet
 from .serializers import DriverSerializer, TruckSerializer, TripSerializer, LogSheetSerializer
@@ -11,6 +12,20 @@ from rest_framework import status
 from django.conf import settings
 from rest_framework.decorators import action
 from django.db.models import Sum
+from django.contrib.auth import get_user_model
+from .serializers import UserSerializer  
+
+User = get_user_model()
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_logged_in_user(request):
+    """
+    Return details of the currently authenticated user.
+    Requires Authorization: Bearer <access_token>
+    """
+    serializer = UserSerializer(request.user)
+    return Response(serializer.data)
 
 
 class DriverViewSet(viewsets.ModelViewSet):

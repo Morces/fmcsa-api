@@ -33,7 +33,13 @@ MAPBOX_API_KEY = os.getenv("MAPBOX_API_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = [
+    "http://localhost:5173/", 
+    "127.0.0.1",
+    "localhost","*"
+]
+
+
 
 
 # Application definition
@@ -52,6 +58,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -100,11 +107,15 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    "default": dj_database_url.parse(
-        config("DATABASE_URL"),
-        conn_max_age=600,   # keeps connection alive
-        ssl_require=True,   # important for Supabase
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+    #  "default": dj_database_url.parse(
+    #     config("DATABASE_URL"),
+    #     conn_max_age=600,   # keeps connection alive
+    #     ssl_require=True,   # important for Supabase
+    # )
 }
 
 
@@ -138,6 +149,14 @@ USE_I18N = True
 
 USE_TZ = True
 
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/

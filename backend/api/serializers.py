@@ -1,5 +1,15 @@
 from rest_framework import serializers
 from .models import Driver, Truck, Trip, LogSheet
+from django.contrib.auth import get_user_model
+
+
+
+User = get_user_model()
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "username", "email", "first_name", "last_name", "last_login", "is_active", "date_joined"]
 
 class DriverSerializer(serializers.ModelSerializer):
     class Meta:
